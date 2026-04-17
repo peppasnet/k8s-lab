@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-page
+  namespace: dev
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Hello from K8s</title>
+      <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #1a1a2e; color: #eee; }
+        .card { text-align: center; padding: 40px; border-radius: 12px; background: #16213e; }
+        h1 { color: #0f3460; font-size: 2.5em; color: #e94560; }
+        p { font-size: 1.2em; color: #aaa; }
+        .info { margin-top: 20px; font-size: 0.9em; color: #555; }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <h1>Hello from Kubernetes!</h1>
+        <p>Deployed via ArgoCD GitOps</p>
+        <p class="info">Pod: <strong>HOSTNAME_PLACEHOLDER</strong></p>
+      </div>
+    </body>
+    </html>
