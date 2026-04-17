@@ -6,7 +6,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: 2  # Two pods — will land on different worker nodes
+  replicas: 4  # Two pods — will land on different worker nodes
   selector:
     matchLabels:
       app: nginx
