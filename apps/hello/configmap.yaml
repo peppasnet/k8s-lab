@@ -8,7 +8,7 @@ data:
     <!DOCTYPE html>
     <html>
     <head>
-      <title>Hello from K8s</title>
+      <title>Hello from George's K8s Cluster!</title>
       <style>
         body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #1a1a2e; color: #eee; }
         .card { text-align: center; padding: 40px; border-radius: 12px; background: #16213e; }
