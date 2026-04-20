@@ -33,17 +33,3 @@ data:
       </div>
     </body>
     </html>
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: hello-script
-  namespace: dev
-data:
-  90-inject-secrets.sh: |
-    #!/bin/sh
-    cp /usr/share/nginx/html/index.html /tmp/index.html
-    sed -i "s|SECRET_MESSAGE_PLACEHOLDER|${SECRET_MESSAGE}|g" /tmp/index.html
-    MASKED_KEY=$(echo "$API_KEY" | sed 's/.\{5\}$/xxxxx/')
-    sed -i "s|API_KEY_PLACEHOLDER|${MASKED_KEY}|g" /tmp/index.html
-    cp /tmp/index.html /usr/share/nginx/html/index.html
