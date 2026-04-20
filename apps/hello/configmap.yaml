@@ -8,20 +8,42 @@ data:
     <!DOCTYPE html>
     <html>
     <head>
-      <title>Hello from George's K8s Cluster!</title>
+      <title>Hello from K8s</title>
       <style>
         body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #1a1a2e; color: #eee; }
-        .card { text-align: center; padding: 40px; border-radius: 12px; background: #16213e; }
-        h1 { color: #0f3460; font-size: 2.5em; color: #e94560; }
-        p { font-size: 1.2em; color: #aaa; }
-        .info { margin-top: 20px; font-size: 0.9em; color: #555; }
+        .card { text-align: center; padding: 40px; border-radius: 12px; background: #16213e; max-width: 600px; }
+        h1 { color: #e94560; font-size: 2em; }
+        .secret-box { background: #0f3460; padding: 20px; border-radius: 8px; margin-top: 20px; text-align: left; }
+        .label { color: #888; font-size: 0.9em; }
+        .value { color: #0fca7a; font-family: monospace; font-size: 1.1em; word-break: break-all; }
+        .masked { color: #e94560; }
       </style>
     </head>
     <body>
       <div class="card">
-        <h1>Hello from Kubernetes!!!</h1>
-        <p>Deployed via ArgoCD GitOps</p>
-        <p class="info">Pod: <strong>HOSTNAME_PLACEHOLDER</strong></p>
+        <h1>Hello from George's K8s Cluster!</h1>
+        <p>Deployed via ArgoCD GitOps + Sealed Secrets</p>
+        <div class="secret-box">
+          <p class="label">Secret message:</p>
+          <p class="value">SECRET_MESSAGE_PLACEHOLDER</p>
+          <p class="label" style="margin-top:12px">API Key (masked):</p>
+          <p class="value masked">API_KEY_PLACEHOLDER</p>
+        </div>
+        <p style="color:#555; font-size:0.8em; margin-top:20px">Secrets stored encrypted in git via Sealed Secrets</p>
       </div>
     </body>
     </html>
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-script
+  namespace: dev
+data:
+  90-inject-secrets.sh: |
+    #!/bin/sh
+    cp /usr/share/nginx/html/index.html /tmp/index.html
+    sed -i "s|SECRET_MESSAGE_PLACEHOLDER|${SECRET_MESSAGE}|g" /tmp/index.html
+    MASKED_KEY=$(echo "$API_KEY" | sed 's/.\{5\}$/xxxxx/')
+    sed -i "s|API_KEY_PLACEHOLDER|${MASKED_KEY}|g" /tmp/index.html
+    cp /tmp/index.html /usr/share/nginx/html/index.html
